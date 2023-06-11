@@ -61,8 +61,8 @@ function updateDisplay() {
         division.appendChild(author);
         division.appendChild(pages);
         division.appendChild(readStatus);
-        division.appendChild(remove);
         division.appendChild(toggle);
+        division.appendChild(remove);
 
         main.appendChild(division);
 
@@ -91,5 +91,52 @@ function updateDisplay() {
             });
     }
 }
+
+document
+    .querySelector('.add-book')
+    .addEventListener('click', () => {
+        const main = document.querySelector('.main');
+        const form = document.createElement('form');
+        form.innerHTML = `
+        <h2>Add new book</h2>
+        <div class="title">
+            <label for="title">Title</label>
+            <input type="text" name="title" id="title">
+        </div>
+        <div class="author">
+            <label for="author">Author</label>
+            <input type="text" name="author" id="author">
+        </div>
+        <div class="pages">
+            <label for="pages">Number of pages</label>
+            <input type="number" name="pages" id="pages" min="0" step="1">
+        </div>
+        <div class="read">
+            <label for="read">Has been read?</label>
+            <input type="checkbox" name="read" id="read">
+        </div>
+        <button type="submit" class="add">Add</button>
+        <button type="button" class="cancel">Cancel</button>
+        `;
+
+        main.appendChild(form);
+
+        form
+            .querySelector('.cancel')
+            .addEventListener('click', () => main.removeChild(form));
+
+        form
+            .querySelector('.add')
+            .addEventListener('click', () => {
+                addBookToLibrary(new Book(
+                    form.querySelector('.title > input').value,
+                    form.querySelector('.author > input').value,
+                    form.querySelector('.pages > input').value,
+                    form.querySelector('.read > input').checked
+                ))
+                updateDisplay();
+                main.removeChild(form);
+            })
+    })
 
 updateDisplay();
